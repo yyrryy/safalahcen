@@ -327,7 +327,7 @@
             </table>
         </div>
 
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
             <div class="shadow rounded p-2" style="background: rgba(201, 255, 202, 0.323);">
                 <h4 class="p-2 rounded text-white bg-success shadow">
                     <strong>
@@ -350,17 +350,12 @@
                     {% for i in clientproducts %}
                     <tr onclick="bondata({{i.id}})">
                         <td>{{i.datebon|date:"d/m/Y"}}</td>
-                        <!-- <td>
-                            {% for i in i.purchased_items.all %}
-                            {{i.product.ref}} <br>
-                            {% endfor %}
-                        </td> -->
+                        
                         <td>
                             {{i.receipt_no}}
                             ({{i.note}})
                         </td>
                         <td>
-                            <!-- <a href="{% url 'sales:invoice_update' id=i.id %}">{{ i.receipt_no }}</a> -->
                             <a >{{ i.grand_total }} DH</a>
                         </td>
                     </tr>
@@ -370,7 +365,6 @@
 
             </div>
         </div>
-        <!-- bon avoir -->
         <div class="col-md-6">
             <div class="shadow rounded p-2" style="background: rgba(255, 180, 180, 0.355);">
                 <h4 class="p-2 rounded text-white bg-danger shadow">
@@ -407,7 +401,7 @@
                 </table>
 
             </div>
-        </div>
+        </div> -->
 
 
     </div>
