@@ -307,7 +307,9 @@
                     <td>Date</td>
                     <td>echeance</td>
                     <td>mode</td>
+                    <td>n piece</td>
                     <td>Mantant</td>
+                    <td>note</td>
                 </tr>
                 {% for i in clientpayments %}
                 <tr>
@@ -317,11 +319,13 @@
                     <td> {{i.date|date:"d/m/Y"}}</td>
                     <td>{{i.echeance|date:"d/m/Y"}}</td>
                     <td>{{i.mode}}</td>
+                    <td>{{i.npiece}}</td>
                     <td>{{i.amount|floatformat:2}} DH
                         <button class="btn btn-danger" onclick="deleteclientpayment(event, '{{i.id}}')">
                             Supprimer
                         </button>
                     </td>
+                    <td>{{i.note}}</td>
                 </tr>
                 {% endfor %}
             </table>
