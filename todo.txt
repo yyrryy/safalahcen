@@ -1,0 +1,5 @@
+bon choose when qdd pqyment client
+charge only when selecting charges
+sold should link to total transaction - payment - avoir in both client and supplier
+modifier bon achat not saving data while adding oriducts
+suppliers in rupture stock
