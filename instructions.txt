@@ -1,0 +1,137 @@
+
+numero sort in supplier bons in supplier informations//
+imprimer bon in facture manual//
+echeance : display current year and month//
+3 years+ in article non vendu
+movement in rapport
+
+
+
+
+
+
+
+
+
+
+
+1. edit bon/facture informations
+2. create shortcut and link it to start.bat
+
+to strat:
+
+ add Client (cie)
+ add categories
+ add one product
+ create invoice
+ go to repports
+ go to add supply
+ check the product first
+ add supplier
+ add supply
+ back to reports
+ got to bon entrees
+ add avances
+ go to suppliers
+
+questions:
+item cost after receiving
+
+
+to do
+update items list in bon receive :/
+update bon update stock :/
+delete bon update stock :/
+add ref to add product form and addbulk :/
+prevent duplicated products :/
+sticky header table :/
+edit sticky top in categories :/
+modifier page acceuille :/
+modifier categories :/
+commander products :/
+auto refresh :/
+add stock:/
+add one product :/
+bon :/ 
+receive update stock :/
+add shortcuts :/
+edit search method (name or car) :/
+00 bon :/
+commande page :/
+stock sortie input in table :
+categories with 0 indicator :/
+
+
+questions
+refs are case sensitive or not
+a ref can be for multiple products
+
+
+
+replace vehicul to designeation
+option facture/BL in add supply
+BON AVOIR IN ADD BON
+edit avoir to add returned products
+cout moyen pondiré
+alert prix vent
+historique produit in past 4
+out: past month
+add filtration
+fisioner les 2eme marques
+FA2499
+15422
+
+remise in search product
+avoir supplier
+
+------------------------
+avoir :/
+edit avoir
+list bon avoir Fournisseurs and edit them
+bon entree edit
+bon sortie update caisse:/
+total regle and rest in table Fournisseurs :/
+fournisseur name in out caisse :/
+ajax in addsupply html :
+ajax in add client bon sortie
+ajax in bon sortie add client/product
+--------------------------------------
+08/04/2024
+user permissions
+update bon sortie
+update bon avoir cl
+update bon avoir supp
+---------
+
+total: acording to selected date
+total reglé, total espece, 
+add year to month in echeances
+
+*sold client when selected in bon sortie
+$sold fournisseur
+pdf commande not workinh the second time
+*denier remise bon achat
+pdf commande date name supplier
+list bon achat
+$order list suppliers by supplier 
+
+Echeance:
+total global - reglé
+total month - reglé
+rest 
+
+Modifierbon
+modifier date
+modifier client
+
+rapport:
+profit calcul should be vente - prix achat of each product
+
+bn vente:
+last price of client
+pay bon immidiatly
+ bon achat
+ last price
+
+
+

@@ -1,0 +1,82 @@
+this used in editing bon entree lines not used anymore cause the bon can be deleted and recreated again
+<script>
+    function calculate(t){
+        $('.calculate').each((i, el)=>{
+            $(el).on('keyup', ()=>{
+                
+                price=$('.price').val()
+                qty=$('.qty').val()
+                remise=$('.remise').val()
+                remiseamount=(price*remise)/100
+                afterremise=price-remiseamount
+                finalamount=(qty*afterremise).toFixed(2)
+                total=$('.total')
+                total.val(finalamount)
+                t.text(finalamount)
+                var totalSum = 0;
+                $('.totalholder').each(function() {
+                    totalSum += parseFloat($(this).text());
+                });
+                $('#grandTotal').text(totalSum.toFixed(2))
+            })
+        })
+    }
+
+    function PrintInvoice(divName){
+         var printContents = document.getElementById(divName).innerHTML;
+         var originalContents = document.body.innerHTML;
+         document.body.innerHTML = printContents;
+         $('body').css('font-size', '12px')
+         $('.head').addClass('')
+         $('table').css('font-size', '9px');
+         $("table > thead > tr > th").css('padding', '0px');
+         $("table > tbody > tr > td").css('padding', '0px');
+         $('body').addClass('d-flex flex-column vh-100 p-3')
+         $('.foooterfacture').addClass('mt-auto');
+         window.print();
+         document.body.innerHTML = originalContents;
+    }
+    
+    $('.editlinebtn').each((i, el)=>{
+        $(el).on('click', ()=>{
+            totalholder=$(el).parent().parent().find('.totalholder')
+            console.log(totalholder)
+            article=$(el).data('article')
+            qty=$(el).data('qty')
+            price=$(el).data('price')
+            remise=$(el).data('remise')
+            total=$(el).data('total')
+            itemid=$(el).data('itemid')
+            console.log(itemid)
+            $('.article').val(article)
+            $('.qty').val(qty)
+            $('.price').val(price)
+            $('.remise').val(remise)
+            $('.total').val(total)
+            $('.itemid').val(itemid)
+            calculate(totalholder)
+        })
+    })
+
+    $('.addpaymentbtn').on ('click', function () {
+        if ($('.amount').val()=='' || $('.details').val()==''){
+            console.log('err')
+            $('.error').show()
+        }
+        else{
+            $(this).addClass('disabled');
+            $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...');
+            
+            $.post('/product/addpaymentsupplier/{{bon.id}}', {
+                'amount':$('.amount').val(),
+                'details':$('.details').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            }, function(data, status){
+                alert('تمت الاضافة')
+                location.reload()
+            })
+        }
+        
+});
+
+</script>

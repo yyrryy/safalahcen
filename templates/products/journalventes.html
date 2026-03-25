@@ -1,0 +1,29 @@
+{% for i in sales %}
+<tr>
+    <td>
+        {{i.product.ref.upper}}
+    </td>
+    <td>
+        {{i.product.pr_achat}}
+    </td>
+    <td>
+        {{i.product.remise}}
+    </td>
+    <td>
+        {{i.product.prnet}}
+    </td>
+    <td>
+        {{i.price}}
+    </td>
+    
+    <td>
+        
+    </td>
+    <td>
+        {{i.quantity}}
+    </td>
+    <td>
+
+    </td>
+</tr>
+{% endfor %}

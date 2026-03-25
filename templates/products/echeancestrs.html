@@ -1,0 +1,38 @@
+            {% for i in echeances %}
+            <tr class="{% if i.echeance == tomorrow %}bg-warning{% elif i.echeance <= today and not i.ispaid and not i.iscash %}bg-danger{% endif %} {{i.mode}}">
+                <td>
+                    {{i.date|date:"d/m/Y"}}
+                </td>
+                <td>
+                    {{i.mode}}
+                </td>
+                <td>
+                    {{i.echeance|date:"d/m/Y"}}
+                </td>
+                <td>
+                    {{i.npiece}}
+                </td>
+                <td>
+                    {{i.amount}}
+                </td>
+                <td>
+                    {{i.supplier.name}}
+                </td>
+                <td>
+                    {% if i.echeance == today or i.echeance < today %}
+                    {% if i.ispaid %}
+                    Reglé
+                    {% elif i.iscash %}
+                    Espece
+                    {% else %}
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-primary" onclick="makeecheancepaid(event, '{{i.id}}')">Reglé</button>
+                        <button class="btn btn-sm btn-success" onclick="makeecheancecash(event, '{{i.id}}')">espece</button>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        

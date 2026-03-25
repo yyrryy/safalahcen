@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block menu_sales %}active{% endblock %}
+{% block submenu_create_bill %}active{% endblock %}
+{% block content %}
+<div class="bg-white rounded p-2">
+    <div class="d-flex justify-content-between">
+        <div>
+            <strong style="font-size: 18px;">Total: <span class="totalamount">{{totalamount}}</span> Dh</strong> <br>
+            <strong class="text-success" style="font-size: 18px;">Total REGLE: <span class="totalpaid">{{totalpaid}}</span> Dh</strong> <br>
+            <strong class="text-danger" style="font-size: 18px;">Rest: <span class="rest">{{rest}}</span> Dh</strong>
+        </div>
+
+        <div class="">
+            <select class="years" onchange="getecheancesdate()">
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+                <option value="2031">2031</option>
+            </select>
+            <select class="months me-3" onchange="getecheancesdate()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>
+            <!-- <button class="btn btn-sm btn-dark fa fa-arrow-right me-2" onclick="getecheancesdate(event)"></button> -->
+            <div style="font-size: 16px;">
+                REGLE ESPECE <strong class="espece">{{espece|floatformat:2}}</strong> DH
+            <br>
+            
+                REGLE BANK <strong class="bank">{{bank|floatformat:2}}</strong> DH
+            </div>
+        </div>
+
+        <div>
+
+            <select class="form-control" name="" id="" onchange="gettypeEcheance(event)">
+                <option value="0">--</option>
+                <option value="effet">EFFET</option>
+                <option value="cheque">CHEQUE</option>
+                <option value="echeanceEspece">ECHEANCE ESPECE</option>
+            </select>
+            <div>
+                <strong class="typetotal">
+                    0.00
+                </strong>DH
+            </div>
+        </div>
+    </div>
+        
+    </strong>
+    <table class="table table-bordered table-hover ">
+        <thead>
+            <tr>
+                <td>Date creation</td>
+                <td>Type</td>
+                <td>
+                    Echeance
+                </td>
+                <td>
+                    N° piece
+                </td>
+                <td>
+                    Mantant
+                </td>
+                <td>
+                    Fourn.
+                </td>
+                <td style="width: 15%;">
+                    Etat
+                </td>
+            </tr>
+        </thead>
+        <tbody class="echeancesbody">
+            {% for i in echeances %}
+            <tr class="{% if i.echeance == tomorrow %}bg-warning{% elif i.echeance <= today and not i.ispaid and not i.iscash %}bg-danger{% endif %} {{i.mode}}">
+                <td>
+                    {{i.date|date:"d/m/Y"}}
+                </td>
+                <td>
+                    {{i.mode}}
+                </td>
+                <td>
+                    {{i.echeance|date:"d/m/Y"}}
+                </td>
+                <td>
+                    {{i.npiece}}
+                </td>
+                <td>
+                    {{i.amount}}
+                </td>
+                <td>
+                    {{i.supplier.name}}
+                </td>
+                <td>
+                    {% if i.echeance == today or i.echeance < today %}
+                    {% if i.ispaid %}
+                    Reglé
+                    {% elif i.iscash %}
+                    Espece
+                    {% else %}
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-primary" onclick="makeecheancepaid(event, '{{i.id}}')">Reglé</button>
+                        <button class="btn btn-sm btn-success" onclick="makeecheancecash(event, '{{i.id}}')">espece</button>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="top:0;" class="d-none passwordscreen m-auto position-fixed bg-dark w-100 h-100 d-flex justify-content-center text-white align-items-center">
+    <input type="password" class="form-control w-50" placeholder="Mot de passe" id="password" onkeyup="checkpassword(event)">
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    
+
+    <script>
+        function getecheancesdate( ){
+            month=$('.months').val()
+            year=$('.years').val()
+            $.get('/product/getecheancesdate', {'month':month, 'year':year}, (data)=>{
+                console.log(data)
+                $('.echeancesbody').html(data.trs)
+                $('.totalamount').text(data.total)
+                $('.totalpaid').text(data.totalpaid)
+                $('.rest').text(data.rest)
+                $('.espece').text(data.espece)
+                $('.bank').text(data.bank)
+            })
+        }
+        function gettypeEcheance(event){
+            const selectedType = $(event.target).val();  // Get the selected value
+            console.log('>>', selectedType)
+            if (selectedType=="0"){
+                $('.echeancesbody tr').show();
+                $('.typetotal').text('{{totalamount}}');
+                return
+            }
+            if (selectedType) {
+                // Hide all rows initially
+                $('.echeancesbody tr').hide();
+
+                // Show only rows with the selected class
+                $(`.echeancesbody tr.${selectedType}`).show();
+            } else {
+                // Show all rows if no type is selected
+                $('.echeancesbody tr').show();
+            }
+
+        // Optionally update the total display for the selected type
+            let total = 0;
+
+            // Sum up amounts only for the visible rows of the selected type
+            $(`.echeancesbody tr.${selectedType}`).each(function () {
+                const amount = parseFloat($(this).find('td:nth-child(5)').text()) || 0;
+                total += amount;
+            });
+
+            // Display the calculated total in the .typetotal div
+            $('.typetotal').text(total.toFixed(2));
+        }
+      inactive=localStorage.getItem('inactive')||'1'
+      console.log('>>>>> ', inactive)
+      if (inactive=='1'){
+        console.log('its inactive')
+        $('.passwordscreen').removeClass('d-none')
+        $('.passwordinput').focus()
+      }else{
+        console.log('its not inactive')
+        checkForInactivity(120)
+      }
+       function makeecheancepaid(event, id){
+        alertify.confirm("Confirmer le paiement", "Voulez vous vraiment marquer cette echeance comme payée?", function(){
+            $.get('/product/makeecheancepaid', {'id':id}, (data)=>{
+                alertify.success('Echeance payée');
+                $(event.target).parent().html('Reglé')
+            })
+        }, function(){
+            alertify.error('Annulé');
+        });
+       }
+       function makeecheancecash(event, id){
+        alertify.confirm("Confirmer le paiement espece", "Voulez vous vraiment marquer cette echeance comme Espece?", function(){
+            $.get('/product/makeecheancecash', {'id':id}, (data)=>{
+                alertify.success('Echeance payée espece');
+                $(event.target).parent().html('Espece')
+            })
+        }, function(){
+            alertify.error('Annulé');
+        });
+       }
+    </script>
+{% endblock %}
