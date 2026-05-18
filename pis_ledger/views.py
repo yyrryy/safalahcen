@@ -233,8 +233,7 @@ class CustomerLedgerDetailsView(TemplateView):
             'remaining_amount': ledger_total,
             'title': 'Detail Client',
             'clientproducts':SalesHistory.objects.filter(customer=customer, ismanual=False, hasmultiple=False).order_by('-datebon'),
-            'avoirs':Avoir.objects.filter(customer=customer),
-            # 'avoirs':Avoir.objects.filter(customer=customer).order_by('-dateavoir'),
+            'avoirs':Avoir.objects.filter(customer=customer).order_by('-dateavoir'),
             'clientpayments':clientpayments.order_by('-created_at'),
         })
 
