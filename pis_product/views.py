@@ -2998,7 +2998,7 @@ def getsupplierprice(request):
     supplierid=request.GET.get('supplierid')
     productid=request.GET.get('productid')
     try:
-        supplierprice=StockIn.objects.filter(reciept__supplier_id=supplierid, product_id=productid).first()
+        supplierprice=StockIn.objects.filter(reciept__supplier_id=supplierid, product_id=productid).last()
         return JsonResponse({
             'price':supplierprice.price,
             'qty':supplierprice.quantity,
@@ -3007,7 +3007,9 @@ def getsupplierprice(request):
     except Exception as e:
         print('>>', e)
         return JsonResponse({
-            'price':0
+            'price':0,
+            'qty':0,
+            'remise':0
         })
 
 def searchsupplier(request):
